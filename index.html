@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Epic Portraits | Premier Portrait Experience</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --epic-blue: #3A8FD0;
+  --bg-soft: #F4F8FC;
+  --text-dark: #1C1C1C;
+  --text-muted: #6C7A89;
+  --line: rgba(58,143,208,.20);
+  --radius: 16px;
+}
+
+/* Base */
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg-soft);
+  font-family:'Inter', sans-serif;
+  color:var(--text-dark);
+}
+.deck{
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+  padding:24px;
+}
+
+/* Slide */
+.slide{
+  width:1200px;
+  aspect-ratio:16/9;
+  margin:auto;
+  background:#fff;
+  border-radius:var(--radius);
+  box-shadow:0 20px 60px rgba(0,0,0,.08);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.cover{
+  background:var(--epic-blue);
+  color:#fff;
+}
+.accent{
+  height:8px;
+  background:var(--epic-blue);
+}
+.header{
+  padding:40px 60px 18px 60px;
+}
+.logo{ height:48px; }
+
+.content{
+  padding:0 60px 40px 60px;
+  flex:1;
+}
+
+/* Type */
+.title{
+  font-family:'Playfair Display', serif;
+  font-size:42px;
+  margin:0;
+  letter-spacing:.2px;
+}
+.subtitle{
+  font-size:18px;
+  color:var(--text-muted);
+  margin-top:10px;
+  max-width:820px;
+  line-height:1.5;
+}
+.cover .subtitle{ color:rgba(255,255,255,.88); }
+
+/* Layout */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+  align-items:start;
+  position:relative;
+}
+.divider-vertical{
+  position:absolute;
+  left:50%;
+  top:0;
+  bottom:0;
+  width:1px;
+  background:var(--line);
+  transform:translateX(-0.5px);
+}
+
+/* Cards */
+.card{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:28px;
+  background:#fff;
+}
+.card h3{
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--text-muted);
+  margin:0 0 14px 0;
+}
+.highlight-panel{
+  border:2px solid var(--epic-blue);
+  background:#F0F7FD;
+}
+
+/* Lists */
+ul{ margin:0; padding-left:18px; }
+li{ margin-bottom:10px; }
+
+/* Tables */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:22px;
+}
+th{
+  text-align:left;
+  font-size:13px;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  padding-bottom:10px;
+  border-bottom:1px solid var(--line);
+}
+td{
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+  vertical-align:top;
+}
+.price{
+  text-align:right;
+  font-weight:600;
+  white-space:nowrap;
+}
+
+/* Calculator */
+.label{
+  font-size:14px;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  letter-spacing:1px;
+}
+input{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  margin-bottom:18px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  font-size:16px;
+}
+button{
+  padding:12px 20px;
+  background:var(--epic-blue);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+}
+.result-box{
+  margin-top:22px;
+  padding:18px;
+  background:#EAF4FC;
+  border:2px solid var(--epic-blue);
+  border-radius:10px;
+  font-size:20px;
+  font-weight:600;
+  min-height:76px;
+  line-height:1.35;
+}
+
+
+/* ALTERNATING SLIDES */
+.deck .slide:nth-of-type(even){
+  background: var(--bg-soft);
+}
+
+/* Print */
+@media print{
+  .deck{gap:0;padding:0;}
+  .slide{box-shadow:none;border-radius:0;page-break-after:always;}
+}
+
+/* SLIDE 2 TYPOGRAPHY ENHANCEMENT */
+.deck .slide:nth-of-type(2) .card{
+  padding:40px;
+}
+
+.deck .slide:nth-of-type(2) h3{
+  font-size:34px;
+  margin-bottom:25px;
+}
+
+.deck .slide:nth-of-type(2) p,
+.deck .slide:nth-of-type(2) li{
+  font-size:20px;
+  line-height:1.7;
+}
+
+.deck .slide:nth-of-type(2) .content{
+  justify-content:space-evenly;
+}
+
+</style>
+
+<script>
+// Smooth count-up animation (safe even if end=0)
+function animateCurrency(el, endValue, durationMs){
+  const startValue = 0;
+  const startTime = performance.now();
+  const formatter = new Intl.NumberFormat(undefined, {maximumFractionDigits:0});
+
+  function frame(now){
+    const t = Math.min((now - startTime) / durationMs, 1);
+    // Ease-out
+    const eased = 1 - Math.pow(1 - t, 3);
+    const current = Math.round(startValue + (endValue - startValue) * eased);
+    el.textContent = "$" + formatter.format(current);
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function calculateRevenue(){
+  const students = parseFloat(document.getElementById('students').value) || 0;
+  const avgOrder = parseFloat(document.getElementById('avgOrder').value) || 0;
+
+  const gross = Math.round(students * avgOrder);
+  const revenue = Math.round(gross * 0.10);
+
+  const output = document.getElementById('output');
+  output.innerHTML =
+    '<div>Projected Gross Sales: <span id="grossVal">$0</span></div>' +
+    '<div style="margin-top:10px;">10% Institutional Partnership Return: <span id="revVal">$0</span></div>';
+
+  animateCurrency(document.getElementById('grossVal'), gross, 900);
+  animateCurrency(document.getElementById('revVal'), revenue, 900);
+}
+</script>
+</head>
+
+<body>
+<div class="deck">
+
+<!-- SLIDE 1: COVER -->
+<section class="slide cover">
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+  <div class="content">
+    <h1 class="title">Premier Portrait Experience</h1>
+    <p class="subtitle">
+      Elevated student portraits delivered with a seamless, professional process designed for schools seeking a refined and premium partnership.
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 2: FOR SCHOOLS / FOR FAMILIES -->
+<section class="slide">
+  <div class="accent"></div>
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+  <div class="content grid">
+    <div class="card">
+      
+<h3>For Schools</h3>
+      <ul>
+        <li>No administrative burden</li>
+        <li>Organized photo-day execution</li>
+        <li>Clear communication timelines</li>
+        <li>Optional staff headshots</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>For Families</h3>
+      <ul>
+        <li>Clean, elevated aesthetic</li>
+        <li>Digital-first gallery delivery</li>
+        <li>Premium print options</li>
+        <li>Responsive customer support</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 3: PREMIER COLLECTION -->
+<section class="slide">
+  <div class="accent"></div>
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+  <div class="content">
+    <h1 class="title">Premier Collection</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:18%;">Tier</th>
+          <th>Includes</th>
+          <th style="text-align:right; width:14%;">Investment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Signature</strong></td>
+          <td>2 – 8x10, 4 – 5x7, 4 – 3x5, 8 Wallets, All Digital Images</td>
+          <td class="price">$99.95</td>
+        </tr>
+        <tr>
+          <td><strong>Classic</strong></td>
+          <td>1 – 8x10, 3 – 5x7, 2 – 3x5, 8 Wallets, 1 Digital Image</td>
+          <td class="price">$89.99</td>
+        </tr>
+        <tr>
+          <td><strong>Essential</strong></td>
+          <td>2 – 5x7, 4 – 3x5, 4 Wallets</td>
+          <td class="price">$44.95</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SLIDE 4: MIX & MATCH PACKAGES -->
+<section class="slide">
+  <div class="accent"></div>
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+  <div class="content">
+    <h1 class="title">Mix & Match Packages</h1>
+    <p class="subtitle">Families can create their own set by choosing prints that fit their needs.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:18%;">Package</th>
+          <th>Details</th>
+          <th style="text-align:right; width:14%;">Investment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Pick 3</strong></td>
+          <td>Choose any 3: 1 – 8x10 OR 2 – 5x7 OR 4 – 3x5 OR 8 Wallets</td>
+          <td class="price">$52.95</td>
+        </tr>
+        <tr>
+          <td><strong>Pick 4</strong></td>
+          <td>Choose any 4: 1 – 8x10 OR 2 – 5x7 OR 4 – 3x5 OR 8 Wallets</td>
+          <td class="price">$64.95</td>
+        </tr>
+        <tr>
+          <td><strong>Pick 5</strong></td>
+          <td>Choose any 5: 1 – 8x10 OR 2 – 5x7 OR 4 – 3x5 OR 8 Wallets</td>
+          <td class="price">$76.95</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SLIDE 5: 10% RETURN + CALCULATOR -->
+<section class="slide">
+  <div class="accent"></div>
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+  <div class="content">
+    <h1 class="title">10% Institutional Partnership Return</h1>
+
+    <div class="grid" style="gap:40px;">
+      <div class="divider-vertical"></div>
+
+      <!-- Left: Explanation -->
+      <div class="card">
+        <h3>What This Means</h3>
+        <p style="margin-top:14px; line-height:1.7;">
+          Epic Portraits returns <strong>10% of total gross portrait sales</strong> directly to your institution.
+        </p>
+        <p style="line-height:1.7;">
+          Gross sales include all portrait package and add-on purchases made by families during the portrait campaign period.
+        </p>
+        <p style="line-height:1.7; margin-bottom:0;">
+          Funds are disbursed within 30 days of campaign close with a transparent sales summary provided.
+        </p>
+      </div>
+
+      <!-- Right: Calculator (highlighted) -->
+      <div class="card highlight-panel">
+        <div class="label">Number of Participating Students</div>
+        <input type="number" id="students" placeholder="e.g. 350">
+
+        <div class="label">Average Family Order ($)</div>
+        <input type="number" id="avgOrder" placeholder="e.g. 85">
+
+        <button type="button" onclick="calculateRevenue()">Calculate Projection</button>
+
+        <div id="output" class="result-box">Projection will appear here.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: EXPANDED PARTNERSHIP OPPORTUNITIES -->
+<section class="slide">
+  <div class="accent"></div>
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+
+  <div class="content">
+    <h1 class="title">Expanded Partnership Opportunities</h1>
+
+    <div class="grid" style="gap:50px;">
+      <div class="divider-vertical"></div>
+
+      <!-- Left: Services -->
+      <div class="card">
+        <h3>Additional Services</h3>
+
+        <p style="margin-top:18px; line-height:1.7;">
+          <strong>Graduation Photography</strong><br>
+          Structured under the same Institutional Partnership Return model as Portrait Day.
+        </p>
+
+        <p style="margin-top:22px; line-height:1.7; margin-bottom:0;">
+          <strong>School Event Coverage</strong><br>
+          Sports, clubs, performances, and special gatherings available on a
+          <strong>structured per-event fee model.</strong>
+        </p>
+      </div>
+
+      <!-- Right: Multi-year incentive -->
+      <div class="card highlight-panel">
+        <h3>Multi-Year Institutional Partnership</h3>
+
+        <p style="margin-top:18px; line-height:1.7;">
+          Institutions entering into a <strong>3-year signed agreement</strong> receive:
+        </p>
+
+        <div style="margin-top:22px;">
+          <div style="font-family:'Playfair Display', serif; font-size:62px; color:var(--epic-blue); font-weight:700; line-height:1;">
+            15%
+          </div>
+          <div style="font-size:22px; margin-top:10px; font-weight:700; letter-spacing:0.5px; color:var(--text-dark); text-transform:uppercase;">
+            Institutional Partnership Return
+          </div>
+        </div>
+
+        <p style="margin-top:22px; line-height:1.7;">
+          Plus <strong>1 complimentary event coverage annually</strong>.
+        </p>
+
+        <p style="margin-top:12px; font-size:14px; color:var(--text-muted); margin-bottom:0;">
+          Applies across eligible portrait and event photography programs.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- SLIDE 7: INSTITUTIONAL MODEL COMPARISON -->
+<section class="slide">
+  <div class="accent"></div>
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+
+  <div class="content">
+    <h1 class="title">Institutional Model Comparison</h1>
+
+    <div class="grid" style="gap:50px;">
+      <div class="divider-vertical"></div>
+
+      <!-- LEFT COLUMN -->
+      <div class="card">
+        <h3>Volume-Based National Vendors</h3>
+
+        <p style="margin-top:18px;">
+          <strong>Commission Range:</strong><br>
+          15–25% typical industry range
+        </p>
+
+        <p style="margin-top:18px;">
+          <strong>Structure:</strong><br>
+          Often tiered or enrollment-dependent
+        </p>
+
+        <p style="margin-top:18px;">
+          <strong>Qualification:</strong><br>
+          May require volume thresholds or minimum participation levels
+        </p>
+
+        <p style="margin-top:18px;">
+          <strong>Digital Revenue:</strong><br>
+          National average digital add-on: $25–$35 per image
+        </p>
+
+        <p style="margin-top:18px;">
+          <strong>Model Focus:</strong><br>
+          Scaled operations across thousands of schools
+        </p>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="card highlight-panel">
+        <h3>Epic Portraits Institutional Model</h3>
+
+        <p style="margin-top:18px; font-size:20px;">
+          <strong style="font-size:26px;">15% Institutional Return</strong><br>
+          Applied to total gross portrait sales with transparent reporting
+        </p>
+
+        <p style="margin-top:20px;">
+          <strong>No Enrollment Thresholds</strong><br>
+          Return applies regardless of school size
+        </p>
+
+        <p style="margin-top:18px;">
+          <strong>No Tier Qualification Requirements</strong><br>
+          Simple and predictable structure
+        </p>
+
+        <p style="margin-top:18px;">
+          <strong>Digital-Inclusive Revenue Model</strong><br>
+          No separation between print and digital value
+        </p>
+      </div>
+
+    </div>
+
+    <div style="margin-top:40px; font-size:18px; color:var(--text-muted);">
+      
+    </div>
+
+  <div style="margin-top:40px; text-align:center; font-size:18px; color:var(--text-muted); max-width:900px; margin-left:auto; margin-right:auto;"></div>
+
+</div>
+</section>
+
+
+
+<!-- SLIDE: IMPLEMENTATION WORKFLOW -->
+<section class="slide">
+  <div class="accent"></div>
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+
+  <div class="content">
+    <h1 class="title">How Portrait Day Runs Smoothly</h1>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:60px;">
+
+      <div class="card highlight" style="width:22%; text-align:center;">
+        <h3>1. Preparation</h3>
+        <p style="margin-top:15px;">
+          Family communication<br>
+          Online ordering opens<br>
+          Coordinated scheduling
+        </p>
+      </div>
+
+      <div style="font-size:40px; color:var(--epic-blue);">→</div>
+
+      <div class="card" style="width:22%; text-align:center;">
+        <h3>2. Photo Day</h3>
+        <p style="margin-top:15px;">
+          Streamlined check-in<br>
+          Efficient capture<br>
+          Minimal classroom disruption
+        </p>
+      </div>
+
+      <div style="font-size:40px; color:var(--epic-blue);">→</div>
+
+      <div class="card" style="width:22%; text-align:center;">
+        <h3>3. Delivery</h3>
+        <p style="margin-top:15px;">
+          Digital gallery release<br>
+          Defined turnaround timeline
+        </p>
+      </div>
+
+      <div style="font-size:40px; color:var(--epic-blue);">→</div>
+
+      <div class="card" style="width:22%; text-align:center;">
+        <h3>4. Institutional Return</h3>
+        <p style="margin-top:15px;">
+          Transparent reporting<br>
+          Revenue disbursement
+        </p>
+      </div>
+
+    </div>
+
+    <div style="margin-top:50px; font-size:18px; color:var(--text-muted); text-align:center;">
+      A structured, step-by-step process designed to reduce administrative workload while maintaining premium execution.
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+<!-- SLIDE: INSTITUTIONAL ASSURANCE -->
+<section class="slide">
+  <div class="accent"></div>
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+
+  <div class="content" style="padding-top:40px;">
+
+    <h1 class="title">Institutional Assurance</h1>
+
+    <div style="display:flex; justify-content:space-between; margin-top:40px;">
+
+      <!-- LEFT COLUMN -->
+      <div style="width:48%;">
+        <div class="card highlight" style="padding:30px;">
+          <h3 style="font-size:24px; margin-bottom:20px;">Operational Integrity</h3>
+
+          <div style="font-size:18px; line-height:1.8;">
+            🛡️ Fully insured operations<br>
+            🔍 Background-checked team<br>
+            🔒 Secure digital galleries<br>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div style="width:48%;">
+        <div class="card highlight" style="padding:30px;">
+          <h3 style="font-size:24px; margin-bottom:20px;">Data & Reputation Protection</h3>
+
+          <div style="font-size:18px; line-height:1.8;">
+            ✔ FERPA-conscious practices<br>
+            🤝 Dedicated institutional contact<br>
+            📋 Clear service accountability<br>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:50px; font-size:18px; color:var(--text-muted); text-align:center;">
+      Built to protect institutional reputation while delivering a premium experience.
+    </div>
+
+  </div>
+</section>
+
+<!-- FINAL SLIDE -->
+<section class="slide">
+  <div class="header">
+    <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
+  </div>
+
+  <div class="content" style="justify-content:center; padding-top:0; text-align:center;">
+
+    <div style="
+      font-family:'Playfair Display', serif;
+      font-size:64px;
+      font-weight:700;
+      color:var(--epic-blue);
+      line-height:1;
+      margin-bottom:20px;
+    ">
+      Their Milestone Matters.
+    </div>
+
+    <div style="
+      display:flex;
+      justify-content:center;
+      align-items:baseline;
+      gap:20px;
+      line-height:0.9;
+    ">
+      <span style="
+        font-size:130px;
+        font-weight:800;
+        color:#000;
+      ">
+        Make it
+      </span>
+
+      <span style="
+        font-size:160px;
+        font-weight:800;
+        color:var(--epic-blue);
+      ">
+        Epic!
+      </span>
+    </div>
+
+    <div style="
+      margin-top:50px;
+      font-size:20px;
+      color:var(--text-muted);
+      font-weight:500;
+      letter-spacing:0.5px;
+    ">
+      Thank you for your trust and partnership.<br>
+      We appreciate the opportunity to serve your community.
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+</div>
+</body>
+</html>
