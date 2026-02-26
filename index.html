@@ -668,36 +668,38 @@ function calculateRevenue(){
 }
 
 window.addEventListener('DOMContentLoaded', function(){
-function updateToggleLabels(){
-  const toggle = document.getElementById('toggleReturn');
-  const left = document.querySelector('.toggle-label.left');
-  const right = document.querySelector('.toggle-label.right');
 
-  if(toggle.checked){
-    left.classList.remove('active');
-    right.classList.add('active');
-  } else {
-    left.classList.add('active');
-    right.classList.remove('active');
-  }
-}
-
-toggle.addEventListener('change', function(){
-  updateToggleLabels();
-  calculateRevenue();
-});
-
-updateToggleLabels();
   const students = document.getElementById('students');
   const avgOrder = document.getElementById('avgOrder');
   const toggle = document.getElementById('toggleReturn');
 
+  function updateToggleLabels(){
+    const left = document.querySelector('.toggle-label.left');
+    const right = document.querySelector('.toggle-label.right');
+
+    if(toggle.checked){
+      left.classList.remove('active');
+      right.classList.add('active');
+    } else {
+      left.classList.add('active');
+      right.classList.remove('active');
+    }
+  }
+
+  // Auto recalc when typing
   students.addEventListener('input', calculateRevenue);
   avgOrder.addEventListener('input', calculateRevenue);
-  toggle.addEventListener('change', calculateRevenue);
+
+  // Single clean toggle listener
+  toggle.addEventListener('change', function(){
+    updateToggleLabels();
+    calculateRevenue();
+  });
+
+  // Initialize state on page load
+  updateToggleLabels();
 
 });
-
 </script>
 </head>
 
