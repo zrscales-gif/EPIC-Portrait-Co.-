@@ -421,7 +421,7 @@ function calculateRevenue(){
   </div>
 </section>
 
-<!-- SLIDE 5: 10% RETURN + CALCULATOR -->
+<!-- SLIDE 5: 10% RETURN + QR CODE -->
 <section class="slide">
   <div class="accent"></div>
   <div class="header">
@@ -447,17 +447,25 @@ function calculateRevenue(){
         </p>
       </div>
 
-      <!-- Right: Calculator (highlighted) -->
-      <div class="card highlight-panel">
-        <div class="label">Number of Participating Students</div>
-        <input type="number" id="students" placeholder="e.g. 350">
+      <!-- Right: QR Code Panel -->
+      <div class="card highlight-panel" style="text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+        
+        <div style="font-size:14px; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:20px;">
+          Scan to Calculate Your Return
+        </div>
 
-        <div class="label">Average Family Order ($)</div>
-        <input type="number" id="avgOrder" placeholder="e.g. 85">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://zrscales-gif.github.io/EPIC-Portrait-Co.-/partner.html"
+             style="width:280px; height:280px; padding:20px; background:#ffffff; 
+                    border:6px solid #3A8FD0; border-radius:18px; 
+                    box-shadow:0 25px 60px rgba(58,143,208,.35);
+                    margin-bottom:20px;"  
+             alt="Scan for Revenue Projection Tool"
+             style="width:260px; height:260px; margin-bottom:20px;">
 
-        <button type="button" onclick="calculateRevenue()">Calculate Projection</button>
+        <div style="font-size:16px; font-weight:600; color:var(--epic-blue);">
+          Live Institutional Projection Tool
+        </div>
 
-        <div id="output" class="result-box">Projection will appear here.</div>
       </div>
     </div>
   </div>
