@@ -562,27 +562,60 @@ button{
 .slide:last-child div[style*="Playfair"] {
   font-size: 32px !important;
 }
-
-</style>
-
-<script>
-// Smooth count-up animation (safe even if end=0)
-function animateCurrency(el, endValue, durationMs){
-  const startValue = 0;
-  const startTime = performance.now();
-  const formatter = new Intl.NumberFormat(undefined, {maximumFractionDigits:0});
-
-  function frame(now){
-    const t = Math.min((now - startTime) / durationMs, 1);
-    // Ease-out
-    const eased = 1 - Math.pow(1 - t, 3);
-    const current = Math.round(startValue + (endValue - startValue) * eased);
-    el.textContent = "$" + formatter.format(current);
-    if (t < 1) requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
+.toggle-wrapper{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin-bottom:30px;
 }
 
+.switch{
+  position:relative;
+  display:inline-block;
+  width:60px;
+  height:34px;
+}
+
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  cursor:pointer;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:#ccc;
+  transition:.4s;
+  border-radius:34px;
+}
+
+.slider:before{
+  position:absolute;
+  content:"";
+  height:26px;
+  width:26px;
+  left:4px;
+  bottom:4px;
+  background-color:white;
+  transition:.4s;
+  border-radius:50%;
+}
+
+input:checked + .slider{
+  background-color:var(--epic-blue);
+}
+
+input:checked + .slider:before{
+  transform:translateX(26px);
+}</style>
+
+
+
 <script>
 function animateCurrency(el, endValue, durationMs){
   const startValue = 0;
@@ -596,26 +629,7 @@ function animateCurrency(el, endValue, durationMs){
     el.textContent = "$" + formatter.format(current);
     if (t < 1) requestAnimationFrame(frame);
   }
-  requestAnimationFrame(frame);
-}
 
-document.getElementById('avgOrder').addEventListener('keypress', function(e){
-  if(e.key === 'Enter'){
-    calculateRevenue();
-  }
-});
-function animateCurrency(el, endValue, durationMs){
-  const startValue = 0;
-  const startTime = performance.now();
-  const formatter = new Intl.NumberFormat(undefined, {maximumFractionDigits:0});
-
-  function frame(now){
-    const t = Math.min((now - startTime) / durationMs, 1);
-    const eased = 1 - Math.pow(1 - t, 3);
-    const current = Math.round(startValue + (endValue - startValue) * eased);
-    el.textContent = "$" + formatter.format(current);
-    if (t < 1) requestAnimationFrame(frame);
-  }
   requestAnimationFrame(frame);
 }
 
@@ -631,19 +645,26 @@ function calculateRevenue(){
   const output = document.getElementById('output');
   output.innerHTML =
     '<div>Projected Gross Sales: <span id="grossVal">$0</span></div>' +
-    '<div style="margin-top:12px;">Institutional Return (' + (percentage*100) + '%): <span id="revVal">$0</span></div>';
+    '<div style="margin-top:12px;">Institutional Return (' +
+    (percentage * 100) +
+    '%): <span id="revVal">$0</span></div>';
 
   animateCurrency(document.getElementById('grossVal'), gross, 700);
   animateCurrency(document.getElementById('revVal'), revenue, 700);
 }
 
-function setupAutoCalculate(){
-  document.getElementById('students').addEventListener('input', calculateRevenue);
-  document.getElementById('avgOrder').addEventListener('input', calculateRevenue);
-  document.getElementById('toggleReturn').addEventListener('change', calculateRevenue);
-}
+window.addEventListener('DOMContentLoaded', function(){
 
-window.addEventListener('DOMContentLoaded', setupAutoCalculate);
+  const students = document.getElementById('students');
+  const avgOrder = document.getElementById('avgOrder');
+  const toggle = document.getElementById('toggleReturn');
+
+  students.addEventListener('input', calculateRevenue);
+  avgOrder.addEventListener('input', calculateRevenue);
+  toggle.addEventListener('change', calculateRevenue);
+
+});
+
 </script>
 </head>
 
@@ -809,20 +830,28 @@ window.addEventListener('DOMContentLoaded', setupAutoCalculate);
         </p>
       </div>
 
-      <!-- Right: QR Code Panel -->
-      <div class="card highlight-panel">
+      <!-- Right:SIDE -->
+     <div class="card highlight-panel">
   <h3>Live Institutional Projection Tool</h3>
 
- <div class="card">
+  <div class="toggle-wrapper">
+    <span>10%</span>
+    <label class="switch">
+      <input type="checkbox" id="toggleReturn">
+      <span class="slider"></span>
+    </label>
+    <span>15% Multi-Year</span>
+  </div>
 
-    <div class="toggle-wrapper">
-      <span>10%</span>
-      <label class="switch">
-        <input type="checkbox" id="toggleReturn">
-        <span class="slider"></span>
-      </label>
-      <span>15% Multi-Year</span>
-    </div>
+  <div class="label">Number of Participating Students</div>
+  <input type="number" id="students" placeholder="e.g. 350">
+
+  <div class="label">Average Family Order ($)</div>
+  <input type="number" id="avgOrder" placeholder="e.g. 85">
+
+  <div id="output" class="result-box">
+    Projection will appear here.
+  </div>
 
     <div class="label">Number of Participating Students</div>
     <input type="number" id="students" placeholder="e.g. 350">
