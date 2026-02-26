@@ -215,6 +215,43 @@ button{
   justify-content:space-evenly;
 }
 
+
+/* ========================= */
+/* COVER PHOTO FAN STYLE */
+/* ========================= */
+
+.cover-photos{
+  position:relative;
+  margin-top:60px;
+  height:360px;
+}
+
+.cover-photos img{
+  position:absolute;
+  width:420px;
+  border-radius:18px;
+  box-shadow:0 35px 70px rgba(0,0,0,.35);
+  transition:transform .4s ease, box-shadow .4s ease;
+}
+
+.cover-photos img:first-child{
+  left:15%;
+  transform:rotate(-10deg);
+  z-index:2;
+}
+
+.cover-photos img:last-child{
+  right:15%;
+  transform:rotate(10deg);
+  z-index:1;
+}
+
+.cover-photos img:hover{
+  transform:scale(1.05) rotate(0deg);
+  z-index:3;
+  box-shadow:0 45px 90px rgba(0,0,0,.45);
+}
+
 </style>
 
 <script>
@@ -261,11 +298,19 @@ function calculateRevenue(){
   <div class="header">
     <img src="images/epic-logo.png" class="logo" alt="Epic Portraits Logo">
   </div>
-  <div class="content">
+  <div class="content" style="text-align:center;">
+
     <h1 class="title">Premier Portrait Experience</h1>
-    <p class="subtitle">
+
+    <p class="subtitle" style="margin-left:auto;margin-right:auto;">
       Elevated student portraits delivered with a seamless, professional process designed for schools seeking a refined and premium partnership.
     </p>
+
+    <div class="cover-photos">
+      <img src="girlphoto.jpg.webp" alt="4th Grade Picture Day">
+      <img src="boyphoto.jpg.webp" alt="1st Grade Picture Day">
+    </div>
+
   </div>
 </section>
 
