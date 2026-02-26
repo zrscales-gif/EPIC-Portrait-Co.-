@@ -865,22 +865,20 @@ window.addEventListener('DOMContentLoaded', function(){
         </p>
       </div>
 
-      <!-- Right:SIDE -->
-    <div class="card highlight-panel">
+    <!-- Right Side -->
+<div class="card highlight-panel">
   <h3>Live Institutional Projection Tool</h3>
 
- <div class="toggle-wrapper">
+  <div class="toggle-wrapper">
+    <span class="toggle-label left">10%</span>
 
-  <span class="toggle-label left">10%</span>
+    <label class="switch">
+      <input type="checkbox" id="toggleReturn">
+      <span class="slider"></span>
+    </label>
 
-  <label class="switch">
-    <input type="checkbox" id="toggleReturn">
-    <span class="slider"></span>
-  </label>
-
-  <span class="toggle-label right">15% Multi-Year</span>
-
-</div>
+    <span class="toggle-label right">15% Multi-Year</span>
+  </div>
 
   <div class="label">Number of Participating Students</div>
   <input type="number" id="students" placeholder="e.g. 350">
@@ -890,8 +888,12 @@ window.addEventListener('DOMContentLoaded', function(){
 
   <div id="output" class="result-box">
     Projection will appear here.
-    
-</div>
+  </div>
+
+</div>  <!-- THIS WAS MISSING -->
+
+</div>  <!-- closes grid -->
+</div>  <!-- closes content -->
 </section>
 
 <!-- SLIDE 6: EXPANDED PARTNERSHIP OPPORTUNITIES -->
