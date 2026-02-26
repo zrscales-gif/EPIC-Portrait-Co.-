@@ -1,0 +1,236 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Epic Portraits | Institutional Partnership Projection</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --epic-blue: #3A8FD0;
+  --bg-soft: #F4F8FC;
+  --text-dark: #1C1C1C;
+  --text-muted: #6C7A89;
+  --line: rgba(58,143,208,.20);
+  --radius: 16px;
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg-soft);
+  font-family:'Inter', sans-serif;
+  color:var(--text-dark);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+.container{
+  width:900px;
+  background:#fff;
+  border-radius:var(--radius);
+  box-shadow:0 20px 60px rgba(0,0,0,.08);
+  padding:60px;
+}
+
+h1{
+  font-family:'Playfair Display', serif;
+  font-size:42px;
+  margin:0 0 15px 0;
+}
+
+.subtitle{
+  font-size:18px;
+  color:var(--text-muted);
+  margin-bottom:40px;
+  line-height:1.6;
+}
+
+.card{
+  border:2px solid var(--epic-blue);
+  background:#F0F7FD;
+  border-radius:12px;
+  padding:40px;
+}
+
+.label{
+  font-size:14px;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  letter-spacing:1px;
+}
+
+input[type="number"]{
+  width:100%;
+  padding:14px;
+  margin-top:8px;
+  margin-bottom:25px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  font-size:18px;
+}
+
+button{
+  padding:14px 24px;
+  background:var(--epic-blue);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+  font-size:16px;
+}
+
+.result-box{
+  margin-top:30px;
+  padding:20px;
+  background:#EAF4FC;
+  border:2px solid var(--epic-blue);
+  border-radius:10px;
+  font-size:22px;
+  font-weight:600;
+  min-height:80px;
+  line-height:1.5;
+}
+
+/* Toggle */
+.toggle-wrapper{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin-bottom:30px;
+}
+
+.switch{
+  position:relative;
+  display:inline-block;
+  width:60px;
+  height:34px;
+}
+
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  cursor:pointer;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:#ccc;
+  transition:.4s;
+  border-radius:34px;
+}
+
+.slider:before{
+  position:absolute;
+  content:"";
+  height:26px;
+  width:26px;
+  left:4px;
+  bottom:4px;
+  background-color:white;
+  transition:.4s;
+  border-radius:50%;
+}
+
+input:checked + .slider{
+  background-color:var(--epic-blue);
+}
+
+input:checked + .slider:before{
+  transform:translateX(26px);
+}
+</style>
+
+<script>
+function animateCurrency(el, endValue, durationMs){
+  const startValue = 0;
+  const startTime = performance.now();
+  const formatter = new Intl.NumberFormat(undefined, {maximumFractionDigits:0});
+
+  function frame(now){
+    const t = Math.min((now - startTime) / durationMs, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const current = Math.round(startValue + (endValue - startValue) * eased);
+    el.textContent = "$" + formatter.format(current);
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function calculateRevenue(){
+  const students = parseFloat(document.getElementById('students').value) || 0;
+  const avgOrder = parseFloat(document.getElementById('avgOrder').value) || 0;
+  const isMultiYear = document.getElementById('toggleReturn').checked;
+
+  const gross = Math.round(students * avgOrder);
+  const percentage = isMultiYear ? 0.15 : 0.10;
+  const revenue = Math.round(gross * percentage);
+
+  const output = document.getElementById('output');
+  output.innerHTML =
+    '<div>Projected Gross Sales: <span id="grossVal">$0</span></div>' +
+    '<div style="margin-top:12px;">Institutional Return (' + (percentage*100) + '%): <span id="revVal">$0</span></div>';
+
+  animateCurrency(document.getElementById('grossVal'), gross, 700);
+  animateCurrency(document.getElementById('revVal'), revenue, 700);
+}
+
+function setupAutoCalculate(){
+  document.getElementById('students').addEventListener('input', calculateRevenue);
+  document.getElementById('avgOrder').addEventListener('input', calculateRevenue);
+  document.getElementById('toggleReturn').addEventListener('change', calculateRevenue);
+}
+
+window.addEventListener('DOMContentLoaded', setupAutoCalculate);
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Institutional Partnership Projection</h1>
+
+  <div class="subtitle">
+    Epic Portraits returns 10% of total gross portrait sales directly to your institution. 
+    Multi-year partners receive 15%. Enter your enrollment data below to model projected revenue.
+  </div>
+
+  <div class="card">
+
+    <div class="toggle-wrapper">
+      <span>10%</span>
+      <label class="switch">
+        <input type="checkbox" id="toggleReturn">
+        <span class="slider"></span>
+      </label>
+      <span>15% Multi-Year</span>
+    </div>
+
+    <div class="label">Number of Participating Students</div>
+    <input type="number" id="students" placeholder="e.g. 350">
+
+    <div class="label">Average Family Order ($)</div>
+    <input type="number" id="avgOrder" placeholder="e.g. 85">
+
+    <button type="button" onclick="calculateRevenue()">Calculate Projection</button>
+
+    <div id="output" class="result-box">Projection will appear here.</div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
