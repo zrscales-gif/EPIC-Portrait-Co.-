@@ -190,11 +190,6 @@ button{
 }
 
 /* Print */
-@media print{
-  .deck{gap:0;padding:0;}
-  .slide{box-shadow:none;border-radius:0;page-break-after:always;}
-}
-
 /* SLIDE 2 TYPOGRAPHY ENHANCEMENT */
 .deck .slide:nth-of-type(2) .card{
   padding:40px;
@@ -270,6 +265,46 @@ button{
 .photo-frame:hover{
   transform:scale(1.05) rotate(0deg);
   z-index:3;
+}
+
+
+/* ========================= */
+/* PERFECT PDF PAGE BREAKS   */
+/* ========================= */
+
+@page {
+  size: letter landscape;
+  margin: 0;
+}
+
+@media print {
+
+  body{
+    margin:0;
+    background:#fff;
+  }
+
+  .deck{
+    gap:0;
+    padding:0;
+  }
+
+  .slide{
+    page-break-after: always;
+    break-after: page;
+    page-break-inside: avoid;
+    break-inside: avoid;
+
+    width:100vw;
+    height:100vh;
+    border-radius:0;
+    box-shadow:none;
+  }
+
+  .slide:last-child{
+    page-break-after: auto;
+  }
+
 }
 
 </style>
