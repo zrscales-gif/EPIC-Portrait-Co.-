@@ -150,9 +150,45 @@ input:checked + .slider{
 input:checked + .slider:before{
   transform:translateX(26px);
 }
+  /* ========================= */
+/* MOBILE CALCULATOR FIX     */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+  input {
+    width: 100%;
+    font-size: 18px;
+    padding: 14px;
+  }
+
+  button {
+    width: 100%;
+    font-size: 18px;
+    padding: 16px;
+    margin-top: 10px;
+  }
+
+  .result-box {
+    font-size: 18px;
+    padding: 20px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+.grid {
+  grid-template-columns: 1fr !important;
+}
+
 </style>
 
 <script>
+  document.getElementById('avgOrder').addEventListener('keypress', function(e){
+  if(e.key === 'Enter'){
+    calculateRevenue();
+  }
+});
 function animateCurrency(el, endValue, durationMs){
   const startValue = 0;
   const startTime = performance.now();
