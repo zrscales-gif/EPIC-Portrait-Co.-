@@ -229,68 +229,45 @@ button{
   height:360px;
 }
 
-
 /* ========================= */
-/* PERFECT PDF PAGE BREAKS   */
+/* CLEAN LANDSCAPE PRINT FIX */
 /* ========================= */
 
 @page {
-  size: letter landscape;
+  size: Letter landscape;
   margin: 0;
 }
 
+@media print {
 
-
-
-  .deck{
-    gap:0;
-    padding:0;
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
   }
 
-  .slide{
-    width:100vw;
-    
-    height:60vh;
+  .deck {
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+
+  .slide {
+    width: 100% !important;
+    height: 8.5in !important;   /* exact landscape height */
     page-break-after: always;
     break-after: page;
     page-break-inside: avoid;
     break-inside: avoid;
-    border-radius:0;
-    box-shadow:none;
-    overflow:hidden;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden;
   }
 
-  .slide:last-child{
+  .slide:last-child {
     page-break-after: auto;
   }
 
 }
-
-
-  .deck{
-    gap:0;
-    padding:0;
-  }
-
-  .slide{
-    page-break-after: always;
-    break-after: page;
-    page-break-inside: avoid;
-    break-inside: avoid;
-
-    width:100vw;
-    height:100vh;
-    border-radius:0;
-    box-shadow:none;
-  }
-
-  .slide:last-child{
-    page-break-after: auto;
-  }
-
-}
-
-
 
 
 
