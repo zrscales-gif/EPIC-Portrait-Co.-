@@ -471,39 +471,98 @@ button{
 
 }
 /* ========================= */
-/* MOBILE SLIDE NAVIGATION   */
+/* MOBILE RESPONSIVE FIX     */
 /* ========================= */
+@media (max-width: 768px) {
 
-@media (max-width: 900px) {
-
-  .deck {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    height: 100vh;
-    padding: 0;
-    gap: 0;
+  body {
+    overflow-y: auto;
   }
 
-  .slide {
-    min-width: 100vw;
-    height: 100vh;
-    scroll-snap-align: start;
+  .deck {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .slide{
+    width: 100%;
+    height: auto;          /* allow natural height */
+    min-height: 100vh;     /* at least full screen */
+    aspect-ratio: auto;
     border-radius: 0;
   }
 
-  body {
-    overflow: hidden;
+  .content{
+    padding: 24px 20px 60px 20px;
   }
 
+  .grid{
+    grid-template-columns: 1fr;
+  }
+
+  .divider-vertical{
+    display: none;
+  }
+
+  /* Typography scaling */
+  .title{
+    font-size: 26px;
+  }
+
+  .cover-headline{
+    font-size: 32px;
+  }
+/* ========================= */
+/* MOBILE RESPONSIVE FIX     */
+/* ========================= */
+@media (max-width: 768px) {
+
+  body {
+    overflow-y: auto;
+  }
+
+  .deck {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .slide{
+    width: 100%;
+    height: auto;          /* allow natural height */
+    min-height: 100vh;     /* at least full screen */
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  .content{
+    padding: 24px 20px 60px 20px;
+  }
+
+  .grid{
+    grid-template-columns: 1fr;
+  }
+
+  .divider-vertical{
+    display: none;
+  }
+
+  /* Typography scaling */
+  .title{
+    font-size: 26px;
+  }
+
+  .cover-headline{
+    font-size: 32px;
+  }
+/* Final slide mobile fix */
+.slide:last-child span {
+  font-size: 48px !important;
 }
 
-/* Hide horizontal scrollbar */
-.deck::-webkit-scrollbar {
-  display: none;
+.slide:last-child div[style*="Playfair"] {
+  font-size: 32px !important;
 }
+
 </style>
 
 <script>
