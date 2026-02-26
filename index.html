@@ -441,7 +441,40 @@ button{
   }
 
 }
+/* ========================= */
+/* MOBILE SLIDE NAVIGATION   */
+/* ========================= */
 
+@media (max-width: 900px) {
+
+  .deck {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100vh;
+    padding: 0;
+    gap: 0;
+  }
+
+  .slide {
+    min-width: 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+    border-radius: 0;
+  }
+
+  body {
+    overflow: hidden;
+  }
+
+}
+
+/* Hide horizontal scrollbar */
+.deck::-webkit-scrollbar {
+  display: none;
+}
 </style>
 
 <script>
