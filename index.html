@@ -583,20 +583,44 @@ function animateCurrency(el, endValue, durationMs){
   requestAnimationFrame(frame);
 }
 
+<script>
+function animateCurrency(el, endValue, durationMs){
+  const startValue = 0;
+  const startTime = performance.now();
+  const formatter = new Intl.NumberFormat(undefined, {maximumFractionDigits:0});
+
+  function frame(now){
+    const t = Math.min((now - startTime) / durationMs, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const current = Math.round(startValue + (endValue - startValue) * eased);
+    el.textContent = "$" + formatter.format(current);
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
 function calculateRevenue(){
   const students = parseFloat(document.getElementById('students').value) || 0;
   const avgOrder = parseFloat(document.getElementById('avgOrder').value) || 0;
+  const percent = parseFloat(document.querySelector('input[name="returnRate"]:checked').value);
 
   const gross = Math.round(students * avgOrder);
-  const revenue = Math.round(gross * 0.10);
+  const revenue = Math.round(gross * percent);
 
   const output = document.getElementById('output');
+
   output.innerHTML =
     '<div>Projected Gross Sales: <span id="grossVal">$0</span></div>' +
-    '<div style="margin-top:10px;">10% Institutional Partnership Return: <span id="revVal">$0</span></div>';
+    '<div style="margin-top:10px;">' +
+    (percent === 0.15 ? '15%' : '10%') +
+    ' Institutional Return: <span id="revVal">$0</span></div>';
 
   animateCurrency(document.getElementById('grossVal'), gross, 900);
   animateCurrency(document.getElementById('revVal'), revenue, 900);
+}
+
+function autoRecalculate(){
+  calculateRevenue();
 }
 </script>
 </head>
@@ -764,42 +788,30 @@ function calculateRevenue(){
       </div>
 
       <!-- Right: QR Code Panel -->
-      <div class="card highlight-panel" style="text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-        
-        <div style="font-size:14px; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:20px;">
-          Scan to Calculate Your Return
-        </div>
+      <div class="card highlight-panel">
+  <h3>Live Institutional Projection Tool</h3>
 
-        <img src="images/qrCode.png"
-     style="
-       width: 100%;
-       max-width: 280px;
-       height: auto;
-       display: block;
-       padding: 18px;
-       background: #ffffff;
-       border: 6px solid #3A8FD0;
-       border-radius: 18px;
-       box-shadow: 0 20px 45px rgba(58,143,208,.35);
-       margin: 0 auto 22px auto;
-     "
-     alt="Scan for Revenue Projection Tool">
-      <a href="https://epicportrait.co/partnercalc" 
-   target="_blank"
-   style="
-     font-size:16px;
-     font-weight:600;
-     color:var(--epic-blue);
-     text-decoration:none;
-     letter-spacing:.3px;
-   "
-   onmouseover="this.style.textDecoration='underline'"
-   onmouseout="this.style.textDecoration='none'">
-  Live Institutional Projection Tool
-</a>
+  <!-- Toggle -->
+  <div style="margin-bottom:25px; display:flex; gap:25px; align-items:center;">
+    <label style="font-weight:600;">
+      <input type="radio" name="returnRate" value="0.10" checked onchange="autoRecalculate()">
+      10% Standard
+    </label>
 
-      </div>
-    </div>
+    <label style="font-weight:600;">
+      <input type="radio" name="returnRate" value="0.15" onchange="autoRecalculate()">
+      15% Multi-Year
+    </label>
+  </div>
+
+  <div class="label">Total Participating Students</div>
+  <input type="number" id="students" placeholder="e.g. 500" oninput="autoRecalculate()">
+
+  <div class="label">Average Family Order ($)</div>
+  <input type="number" id="avgOrder" placeholder="e.g. 75" oninput="autoRecalculate()">
+
+  <div id="output" class="result-box">
+    Enter your data to model projected revenue.
   </div>
 </section>
 
