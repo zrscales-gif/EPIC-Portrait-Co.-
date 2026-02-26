@@ -231,12 +231,37 @@ button{
   margin: 0;
 }
 
+
 @media print {
 
   body{
     margin:0;
     background:#fff;
   }
+
+  .deck{
+    gap:0;
+    padding:0;
+  }
+
+  .slide{
+    width:100vw;
+    height:100vh;
+    page-break-after: always;
+    break-after: page;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border-radius:0;
+    box-shadow:none;
+    overflow:hidden;
+  }
+
+  .slide:last-child{
+    page-break-after: auto;
+  }
+
+}
+
 
   .deck{
     gap:0;
@@ -364,10 +389,8 @@ button{
   opacity:.85;
 }
 
-.cover .logo{
-  height:85px;
-  transform:scale(1.1);
-  filter: drop-shadow(0 8px 20px rgba(0,0,0,.4));
+.logo{
+  height:75px;
 }
 
 .cover{
@@ -586,13 +609,8 @@ function calculateRevenue(){
           Scan to Calculate Your Return
         </div>
 
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://zrscales-gif.github.io/EPIC-Portrait-Co.-/partner.html"
-             style="width:280px; height:280px; padding:20px; background:#ffffff; 
-                    border:6px solid #3A8FD0; border-radius:18px; 
-                    box-shadow:0 25px 60px rgba(58,143,208,.35);
-                    margin-bottom:20px;"  
-             alt="Scan for Revenue Projection Tool"
-             style="width:260px; height:260px; margin-bottom:20px;">
+        <img src="images/qrCode.png"
+             style="width:280px; height:280px; padding:20px; background:#ffffff; border:6px solid #3A8FD0; border-radius:18px; box-shadow:0 25px 60px rgba(58,143,208,.35); margin-bottom:20px;" alt="Scan for Revenue Projection Tool">
 
         <div style="font-size:16px; font-weight:600; color:var(--epic-blue);">
           Live Institutional Projection Tool
