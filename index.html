@@ -34,9 +34,9 @@ body{
 
 /* Slide */
 .slide{
-  width:1200px;
-  aspect-ratio:16/9;
-  margin:auto;
+  width: min(1200px, 100%);
+  aspect-ratio: 16 / 9;
+  margin: auto;
   background:#fff;
   border-radius:var(--radius);
   box-shadow:0 20px 60px rgba(0,0,0,.08);
@@ -1044,5 +1044,45 @@ function calculateRevenue(){
 
 
 </div>
+  <!-- MOBILE DOT NAVIGATION -->
+<div id="mobileNav" style="
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  display:none;
+  gap:8px;
+  z-index:9999;
+">
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const nav = document.getElementById('mobileNav');
+
+function updateNav() {
+  if (window.innerWidth <= 900) {
+    nav.style.display = "flex";
+  } else {
+    nav.style.display = "none";
+  }
+}
+
+slides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.style.width = "8px";
+  dot.style.height = "8px";
+  dot.style.borderRadius = "50%";
+  dot.style.background = "rgba(255,255,255,0.6)";
+  dot.style.cursor = "pointer";
+  dot.onclick = () => {
+    slides[i].scrollIntoView({ behavior: 'smooth' });
+  };
+  nav.appendChild(dot);
+});
+
+updateNav();
+window.addEventListener("resize", updateNav);
+</script>
 </body>
 </html>
